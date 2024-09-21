@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Family Finder</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function submitPost(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const birthName = document.getElementById('birthName').value || "N/A";
+            const adoptedName = document.getElementById('adoptedName').value || "N/A";
+            const dob = document.getElementById('dob').value || "N/A";
+            const location = document.getElementById('location').value || "N/A";
+            const agency = document.getElementById('agency').value || "N/A";
+            const contact = document.getElementById('contact').value || "N/A";
+            const comments = document.getElementById('comments').value || "N/A";
+
+            // Create a new post element
+            const post = document.createElement('div');
+            post.classList.add('post');
+            post.innerHTML = `
+                <h3>Birth Name: ${birthName} | Adopted Name: ${adoptedName}</h3>
+                <p><strong>Date of Birth:</strong> ${dob}</p>
+                <p><strong>Last Known Location:</strong> ${location}</p>
+                <p><strong>Adoption Agency:</strong> ${agency}</p>
+                <p><strong>Contact Information:</strong> ${contact}</p>
+                <p><strong>Additional Comments:</strong> ${comments}</p>
+                <hr>
+            `;
+
+            // Append the new post to the posts section
+            document.getElementById('posts').appendChild(post);
+
+            // Clear the form
+            document.getElementById('postForm').reset();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Simple Family Finder</h1>
+    </header>
+    <nav>
+        <a href="#search">Search</a>
+        <a href="#post">Post</a>
+        <a href="#about">About</a>
+    </nav>
+    <section id="home">
+        <h2>Our Mission</h2>
+        <p>Our mission is to connect adoptees, birth parents, and family members seeking to reunite. This platform is a safe and simple space to share information and help you on your journey to finding your family.</p>
+    </section>
+    <section id="search">
+        <h2>Search for Family</h2>
+        <p>Use the search function below to look for posts from individuals seeking their family members.</p>
+        <!-- You can add a search form here -->
+    </section>
+    <section id="post">
+        <h2>Post Your Information</h2>
+        <p>If you are an adoptee, birth parent, or family member seeking to connect, please fill out the form below. All fields are optional.</p>
+        <form id="postForm" onsubmit="submitPost(event)">
+            <label>Birth Name:</label>
+            <input type="text" id="birthName">
+            <label>Adopted Name:</label>
+            <input type="text" id="adoptedName">
+            <label>Date of Birth:</label>
+            <input type="date" id="dob">
+            <label>Last Known Location:</label>
+            <input type="text" id="location">
+            <label>Adoption Agency (if applicable):</label>
+            <input type="text" id="agency">
+            <label>Contact Information (optional):</label>
+            <input type="text" id="contact">
+            <label>Additional Comments:</label>
+            <textarea id="comments" rows="4"></textarea>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="posts" style="margin-top: 20px;"></div> <!-- Container for posts -->
+    </section>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Simple Family Finder was created to assist those searching for lost family connections. Our goal is to provide a user-friendly platform where individuals can connect, share information, and find support in their search.</p>
+    </section>
+    <footer>
+        <p>&copy; 2024 Simple Family Finder</p>
+    </footer>
+</body>
+</html>
+
