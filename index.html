@@ -6,59 +6,68 @@
     <title>Simple Family Finder</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-        function submitPost(event) {
-            event.preventDefault(); // Prevent form submission
+        async function submitPost(event) {
+            event.preventDefault();
 
-            const birthName = document.getElementById('birthName').value || "N/A";
-            const adoptedName = document.getElementById('adoptedName').value || "N/A";
-            const dob = document.getElementById('dob').value || "N/A";
-            const location = document.getElementById('location').value || "N/A";
-            const agency = document.getElementById('agency').value || "N/A";
-            const contact = document.getElementById('contact').value || "N/A";
-            const comments = document.getElementById('comments').value || "N/A";
+            const postData = {
+                birthName: document.getElementById('birthName').value,
+                adoptedName: document.getElementById('adoptedName').value,
+                dob: document.getElementById('dob').value,
+                location: document.getElementById('location').value,
+                agency: document.getElementById('agency').value,
+                contact: document.getElementById('contact').value,
+                comments: document.getElementById('comments').value,
+            };
 
-            // Create a new post element
-            const post = document.createElement('div');
-            post.classList.add('post');
-            post.innerHTML = `
-                <h3>Birth Name: ${birthName} | Adopted Name: ${adoptedName}</h3>
-                <p><strong>Date of Birth:</strong> ${dob}</p>
-                <p><strong>Last Known Location:</strong> ${location}</p>
-                <p><strong>Adoption Agency:</strong> ${agency}</p>
-                <p><strong>Contact Information:</strong> ${contact}</p>
-                <p><strong>Additional Comments:</strong> ${comments}</p>
-                <hr>
-            `;
-
-            // Append the new post to the posts section
-            document.getElementById('posts').appendChild(post);
+            // Send POST request to your backend (update the URL accordingly)
+            await fetch('http://localhost:3000/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+            });
 
             // Clear the form
             document.getElementById('postForm').reset();
+
+            // Fetch and display posts
+            fetchPosts();
         }
+
+        async function fetchPosts() {
+            const response = await fetch('http://localhost:3000/posts');
+            const posts = await response.json();
+
+            // Display posts
+            const postsContainer = document.getElementById('posts');
+            postsContainer.innerHTML = ''; // Clear existing posts
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+                postElement.innerHTML = `
+                    <h3>Birth Name: ${post.birthName} | Adopted Name: ${post.adoptedName}</h3>
+                    <p><strong>Date of Birth:</strong> ${post.dob}</p>
+                    <p><strong>Last Known Location:</strong> ${post.location}</p>
+                    <p><strong>Adoption Agency:</strong> ${post.agency}</p>
+                    <p><strong>Contact Information:</strong> ${post.contact}</p>
+                    <p><strong>Additional Comments:</strong> ${post.comments}</p>
+                    <hr>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        }
+
+        // Fetch posts on page load
+        window.onload = fetchPosts;
     </script>
 </head>
 <body>
     <header>
         <h1>Welcome to Simple Family Finder</h1>
     </header>
-    <nav>
-        <a href="#search">Search</a>
-        <a href="#post">Post</a>
-        <a href="#about">About</a>
-    </nav>
-    <section id="home">
-        <h2>Our Mission</h2>
-        <p>Our mission is to connect adoptees, birth parents, and family members seeking to reunite. This platform is a safe and simple space to share information and help you on your journey to finding your family.</p>
-    </section>
-    <section id="search">
-        <h2>Search for Family</h2>
-        <p>Use the search function below to look for posts from individuals seeking their family members.</p>
-        <!-- You can add a search form here -->
-    </section>
     <section id="post">
         <h2>Post Your Information</h2>
-        <p>If you are an adoptee, birth parent, or family member seeking to connect, please fill out the form below. All fields are optional.</p>
         <form id="postForm" onsubmit="submitPost(event)">
             <label>Birth Name:</label>
             <input type="text" id="birthName">
@@ -76,15 +85,7 @@
             <textarea id="comments" rows="4"></textarea>
             <input type="submit" value="Submit">
         </form>
-        <div id="posts" style="margin-top: 20px;"></div> <!-- Container for posts -->
+        <div id="posts" style="margin-top: 20px;"></div>
     </section>
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Simple Family Finder was created to assist those searching for lost family connections. Our goal is to provide a user-friendly platform where individuals can connect, share information, and find support in their search.</p>
-    </section>
-    <footer>
-        <p>&copy; 2024 Simple Family Finder</p>
-    </footer>
 </body>
 </html>
-
